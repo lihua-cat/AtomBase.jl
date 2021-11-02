@@ -3,7 +3,9 @@ module AtomBase
 import Unitful: Wavenumber, Mass
 import HalfIntegers: HalfInt
 
-export AtomState, FineStructure, HyperfineStructure
+export State, SubState,
+       FineState, CoupledSubFineState, UncoupledSubFineState,
+       HyperfineState, CoupledSubHyperfineState, UncoupledSubHyperfineState
 include("atom_state.jl")
 
 export HyperfineConstant

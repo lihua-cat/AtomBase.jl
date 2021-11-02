@@ -6,44 +6,53 @@ quantum number notation
 - `I` nuclear spin quantum number
 - `F` J + I, total quantum number of hyperfine sturcture 
 """
-abstract type AtomState end
+abstract type State end
+abstract type SubState <: State end
 
-struct FineStructure <: AtomState
+## Fine Structure
+struct FineState <: State
     L::Int
     S::HalfInt
     J::HalfInt
-    function FineStructure(L, S, J)
-        if all((L, S, J) .>= 0)
-            if J in abs(L-S):abs(L+S)
-                new(L, S, J)
-            else
-                error("L, S, J not match: $L, $S, $J")
-            end
-        else
-            error("L: $L, S: $S, J: $J must be non-negative!!")
-        end
-    end
 end
 
-struct HyperfineStructure <: AtomState
+struct CoupledSubFineState <: SubState
+    L::Int
+    S::HalfInt
+    J::HalfInt
+    MJ::HalfInt
+end
+
+struct UncoupledSubFineState <: SubState
+    L::Int
+    ML::Int
+    S::HalfInt
+    MS::HalfInt
+end
+
+## Hyperfine structure
+struct HyperfineState <: State
     L::Int
     S::HalfInt
     J::HalfInt
     I::HalfInt
     F::HalfInt
-    function FineStructure(L, S, J, I, F)
-        if all((L, S, J, I, F) .>= 0)
-            if J in abs(L-S):abs(L+S)
-                if F in abs(J-I):abs(J+I)
-                    new(L, S, J)
-                else
-                    error("J, I, F not match: $J, $I, $F")
-                end
-            else
-                error("L, S, J not match: $L, $S, $J")
-            end
-        else
-            error("L: $L, S: $S, J: $J, I: $I, F: $F must be non-negative!!")
-        end
-    end
+end
+
+struct CoupledSubHyperfineState <: SubState
+    L::Int
+    S::HalfInt
+    J::HalfInt
+    I::HalfInt
+    F::HalfInt
+    MF::HalfInt
+end
+
+struct UncoupledSubHyperfineState <: SubState
+    L::Int
+    S::HalfInt
+    J::HalfInt
+    MJ::HalfInt
+    I::HalfInt
+    MI::HalfInt
 end

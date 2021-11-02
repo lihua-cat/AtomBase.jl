@@ -1,7 +1,7 @@
 abstract type EnergyLevel end
 
 struct FineLevel <: EnergyLevel
-    state::FineStructure
+    state::FineState
     hfc::HyperfineConstant
     E::Wavenumber   # energy level
 end
