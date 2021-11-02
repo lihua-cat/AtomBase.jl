@@ -3,6 +3,10 @@ uuid = "640af26c-ec64-41b7-8129-95595126c51b"
 authors = ["Northwemko <yinyangxiangsheng@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+HalfIntegers = "f0d1745a-41c9-11e9-1dd9-e5d34d218721"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
 [compat]
 julia = "1"
 
