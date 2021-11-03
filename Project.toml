@@ -8,6 +8,7 @@ HalfIntegers = "f0d1745a-41c9-11e9-1dd9-e5d34d218721"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
+HalfIntegers = "1"
 julia = "1"
 
 [extras]
