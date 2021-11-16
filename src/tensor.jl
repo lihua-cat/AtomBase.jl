@@ -34,7 +34,7 @@ Uncoupling formular with **T** operates only on $|\alpha_1j_1m_1\rangle$.
 \left\langle\alpha_{1} j_{1} \alpha_{2} j_{2} j\left\|\mathrm{T}^{(\mathbf{k})}\right\| \alpha_{1}^{\prime} j_{1}^{\prime} \alpha_{2}^{\prime} j_{2}^{\prime} j^{\prime}\right\rangle = \delta_{\alpha_{2} j_{2}, \alpha_{2}^{\prime} j_{2}^{\prime}}(-1)^{J_{1}+J_{2}+J^{\prime}+k}\left[j, j^{\prime}\right]^{1 / 2}\left\{\begin{array}{lll}
 j_{1} & j_{2} & j \\
 j^{\prime} & k & j_{1}^{\prime}
-\end{array}\right\}\left\langle\alpha_{1} j_{1}\left\|T^{(k)}\right\| \alpha_{1}^{\prime} j_{1}^{\prime}\right\rangle
+\end{array}\right\}\left\langle\alpha_{1} j_{1}\left\|\mathrm{T}^{(\mathbf{k})}\right\| \alpha_{1}^{\prime} j_{1}^{\prime}\right\rangle
 ```
 see *The theory of atomic structure and spectra* (11.38)
 """
@@ -52,12 +52,12 @@ end
 
     uncoup_T2(j1, j2, j, j1', j2', j', k)
 
-Uncoupling formular with **T** operates only on $|\alpha_2j_2m_2\rangle$.
+Uncoupling formular with **W** operates only on $|\alpha_2j_2m_2\rangle$.
 ```math
-\left\langle\alpha_{1} j_{1} \alpha_{2} j_{2} j\left\|\mathbf{W}^{(k)}\right\| \alpha_{1}^{\prime} j_{1}^{\prime} \alpha_{2}^{\prime} j_{2}^{\prime} j^{\prime}\right\rangle = \delta_{\alpha_{1} j_{1}, \alpha_{1}^{\prime} j_{1}^{\prime}}(-1)^{j_{1}+j_2^{\prime}+j+k}\left[j, j^{\prime}\right]^{1 / 2}\left\{\begin{array}{ll}
+\left\langle\alpha_{1} j_{1} \alpha_{2} j_{2} j\left\|\mathbf{W}^{(\mathbf{k})}\right\| \alpha_{1}^{\prime} j_{1}^{\prime} \alpha_{2}^{\prime} j_{2}^{\prime} j^{\prime}\right\rangle = \delta_{\alpha_{1} j_{1}, \alpha_{1}^{\prime} j_{1}^{\prime}}(-1)^{j_{1}+j_2^{\prime}+j+k}\left[j, j^{\prime}\right]^{1 / 2}\left\{\begin{array}{ll}
 j_{1} & j_{2} & j \\
 k & j^{\prime} & j_{2}^{\prime}
-\end{array}\right\}\left\langle\alpha_{2} j_{2}\left\|W^{(k)}\right\| \alpha_{2}^{\prime} j_{2}^{\prime}\right\rangle
+\end{array}\right\}\left\langle\alpha_{2} j_{2}\left\|\mathbf{W}^{(\mathbf{k})}\right\| \alpha_{2}^{\prime} j_{2}^{\prime}\right\rangle
 ```
 see *The theory of atomic structure and spectra* (11.39)
 """
