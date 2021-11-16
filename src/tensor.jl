@@ -7,7 +7,7 @@ return the geometrical coefficient of the Wigner-Eckart Theorem, equal to `0` un
 \left\langle\alpha jm\left|\mathrm{T}_{\mathrm{q}}^{(\mathbf{k})}\right| \alpha^{\prime} j' m^{\prime}\right\rangle=(-1)^{j-m}\left(\begin{array}{rrr}
 j & k & j^{\prime} \\
 -m & q & m^{\prime}
-\end{array}\right)\left\langle\alpha j\left\|T^{(k)}\right\| \alpha^{\prime} j^{\prime}\right\rangle
+\end{array}\right)\left\langle\alpha j\left\|\mathrm{T}^{(\mathbf{k})}\right\| \alpha^{\prime} j^{\prime}\right\rangle
 ```
 see *The theory of atomic structure and spectra* (11.15).
 """
