@@ -4,7 +4,7 @@ struct HyperfineStructureState{L,S,J,I} <: AtomState
     F::HalfInt
     MF::HalfInt
     function HyperfineStructureState{L,S,J,I}(F, MF) where {L,S,J,I}
-        if F > 0 && MF in F:-1:(-F)
+        if F >= 0 && MF in F:-1:(-F)
             new{L,S,J,I}(F, MF)
         else
             error("Invalid angular momentum quantum number")

@@ -1,4 +1,4 @@
-function diagnoal(op::Operator{T, S}) where {T, S}
+function diagonal(op::Operator{T, S}) where {T, S}
     ishermitian(op) || error("Operator maxtrix is not hermitian")
     m = op.c
     h = Hermitian(m)

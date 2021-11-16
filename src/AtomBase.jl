@@ -27,7 +27,7 @@ export 𝒥₊ℐ₋, 𝒥₋ℐ₊
 export 𝒥₊²ℐ₋², 𝒥₋²ℐ₊²
 include("operator.jl")
 
-export diagnoal
+export diagonal
 include("perturbation.jl")
 
 export basistransform
