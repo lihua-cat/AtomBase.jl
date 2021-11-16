@@ -22,8 +22,8 @@ J₊I₋ = 𝒥₊ℐ₋(basis)
 J₋I₊ = 𝒥₋ℐ₊(basis)
 J₊²I₋² = 𝒥₊²ℐ₋²(basis)
 
-vals, vecs = diagnoal(Jz)
-vals, vecs = diagnoal(J₊I₋ + J₋I₊)
+vals, vecs = diagonal(Jz)
+vals, vecs = diagonal(J₊I₋ + J₋I₊)
 
 kv = vecs[1]
 kvt = basistransform(kv, basis2)

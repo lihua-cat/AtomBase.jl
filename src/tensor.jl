@@ -15,7 +15,7 @@ wigner_eckart(j1, j2, m1, m2, k, q) = RationalRoot((-1)^(j1 - m1)) * wigner3j(j1
 
 @doc raw"""
 
-    rme_J(j, j')
+    reduceME(j, j')
 
 reduce matrix element `rme_J(j, j')` = $\langle\alpha jm|J^{(1)}_0|\alpha'j'm'\rangle$ 
 ```math
@@ -23,10 +23,11 @@ reduce matrix element `rme_J(j, j')` = $\langle\alpha jm|J^{(1)}_0|\alpha'j'm'\r
 ```
 see *The theory of atomic structure and spectra* (11.18).
 """
-rme_J(j1, j2) = j1 == j2 ? RationalRoot(√(j1*(j1+1)*(2j1+1))) : zero(j1) 
+reduceME(j1, j2) = j1 == j2 ? RationalRoot(√(j1 * (j1 + 1) * (2j1 + 1))) : zero(RationalRoot{Int})
 
 @doc raw"""
-    uncoup_T1k(j1, j2, j, j1', j2', j', k)
+
+    uncoup_T1(j1, j2, j, j1', j2', j', k)
 
 Uncoupling formular with **T** operates only on $|\alpha_1j_1m_1\rangle$.
 ```math
@@ -37,15 +38,19 @@ j^{\prime} & k & j_{1}^{\prime}
 ```
 see *The theory of atomic structure and spectra* (11.38)
 """
-uncoup_T1k(j11, j21, j1, j12, j22, j2, k) = 
-    j21 == j22 ?
-    RationalRoot((-1) ^ (j11 + j21 + j2 + k) * √((2j1 + 1) * (2j2 + 1))) *
-    wigner6j(j11, j21, j1, j2, k, j12) :
-    zero(j1)
+function uncoup_T1(j11, j21, j1, j12, j22, j2, k)
+    if j21 == j22 
+        RationalRoot((-1)^(j11 + j21 + j2 + k) * √((2j1 + 1) * (2j2 + 1))) * 
+        wigner6j(j11, j21, j1, j2, k, j12)
+    else
+        zero(RationalRoot{Int})
+    end
+end
 
 
 @doc raw"""
-    uncoup_T2k(j1, j2, j, j1', j2', j', k)
+
+    uncoup_T2(j1, j2, j, j1', j2', j', k)
 
 Uncoupling formular with **T** operates only on $|\alpha_2j_2m_2\rangle$.
 ```math
@@ -56,8 +61,11 @@ k & j^{\prime} & j_{2}^{\prime}
 ```
 see *The theory of atomic structure and spectra* (11.39)
 """
-uncoup_T2k(j11, j21, j1, j12, j22, j2, k) = 
-    j11 == j12 ?
-    RationalRoot((-1) ^ (j11 + j22 + j1 + k) * √((2j1 + 1) * (2j2 + 1))) *
-    wigner6j(j11, j21, j1, k, j2, j22) :
-    zero(j1)
+function uncoup_T2(j11, j21, j1, j12, j22, j2, k)
+    if j11 == j12
+        RationalRoot((-1)^(j11 + j22 + j1 + k) * √((2j1 + 1) * (2j2 + 1))) *
+        wigner6j(j11, j21, j1, k, j2, j22)
+    else
+        zero(RationalRoot{Int})
+    end
+end

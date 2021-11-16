@@ -31,8 +31,9 @@ export diagonal
 include("perturbation.jl")
 
 export basistransform
-include("transformation.jl")
+include("basis transform.jl")
 
+export wigner_eckart, reduceME, uncoup_T1, uncoup_T2
 include("tensor.jl")
 
 include("show.jl")
