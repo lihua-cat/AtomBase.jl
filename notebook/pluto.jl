@@ -61,6 +61,9 @@ kvt = basistransform(kv, basis_c)
 # ╔═╡ 7b93d187-8ffa-41e2-9a48-506c997f3601
 kvtt = basistransform(kvt, basis_uc)
 
+# ╔═╡ afb20872-a53a-45ac-816b-9fe4aba4bba7
+@doc uncoup_T2
+
 # ╔═╡ Cell order:
 # ╠═92ecd7f0-46ab-11ec-3748-9da2e4977a67
 # ╠═c37f5f93-3707-483b-b580-e5b5a189669f
@@ -78,3 +81,4 @@ kvtt = basistransform(kvt, basis_uc)
 # ╠═f8ab3973-d277-47f4-90f3-0bbe34bb2ae9
 # ╠═20f1d19d-7775-40b1-8952-20ca1d2137b9
 # ╠═7b93d187-8ffa-41e2-9a48-506c997f3601
+# ╠═afb20872-a53a-45ac-816b-9fe4aba4bba7

@@ -29,3 +29,10 @@ kv = vecs[1]
 kvt = basistransform(kv, basis2)
 kvtt = basistransform(kvt, basis)
 kvtt.c ≈ kv.c
+
+J = (1/2, 1/2)
+I = (7/2, 7/2)
+for F1 in J[1]+I[1]:-1:abs(J[1]-I[1]), F2 in J[2]+I[2]:-1:abs(J[2]-I[2])
+    c = uncoup_T1(J[1], I[1], F1, J[2], I[2], F2, 1)^2
+    println("$F1 -> $F2: $c")
+end

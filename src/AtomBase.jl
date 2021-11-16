@@ -36,6 +36,9 @@ include("basis transform.jl")
 export wigner_eckart, reduceME, uncoup_T1, uncoup_T2
 include("tensor.jl")
 
+export transitionME, reducedME_M1, reducedME_E1, relative_transition_intensity
+include("radiation.jl")
+
 include("show.jl")
 
 
