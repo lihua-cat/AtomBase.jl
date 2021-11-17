@@ -75,5 +75,9 @@ zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
     Op{promote_type(T1, T2),S}(k.c * b.c, k.s, b.s)
 #  op * ket
 *(op::Op{T1,S}, k::Ket{T2,S}) where {T1,T2,S} = Ket(Bra(op.c, op.bs) * k, op.ks)
-
+#  x * op, op * x
+*(x::Number, op::Op) = Op(x * op.c, op.ks, op.bs)
+*(op::Op, x::Number) = *(x, op)
+*(x::Number, op::Operator) = Operator(x * op.c, op.ks, op.bs)
+*(op::Operator, x::Number) = *(x, op)
 ## Quantum Mechanics
