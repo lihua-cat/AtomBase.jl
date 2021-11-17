@@ -25,8 +25,17 @@ end
 
 function Base.show(io::IO, mime::MIME"text/plain", s::AtomState)
     println(io, summary(s))
-    print(io, ' ')
-    print(io, s)
+    for p in propertynames(s)
+        v = getproperty(s, p)
+        if p in (:MJ, :MI, :MF, :MS)
+            v > 0 && print(io, "$p=+$v")
+            v < 0 && print(io, "$p=$v")
+            v == 0 && print(io, "$p= $v")
+        else
+            print(io, "$p=$v")
+        end
+        p == propertynames(s)[end] || print(io, ",")
+    end
     return nothing
 end
 
