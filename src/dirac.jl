@@ -46,8 +46,10 @@ adjoint(op::Op) = Op(op.c', op.bs, op.ks)
 zero(d::D) where {D<:Dirac} = D(zero(d.c), d.s)
 zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 #  ket + ket, bra + bra
-+(d1::D, d2::D) where {D<:Dirac} =
-    d1.s == d2.s ? D(d1.c + d2.c, d1.s) : error("ket or bra +")
++(k1::Ket{T1, S}, k2::Ket{T2, S}) where {T1,T2,S} =
+    k1.s == k2.s ? Ket(k1.c + k2.c, k1.s) : error("Ket +")
++(b1::Bra{T1, S}, b2::Bra{T2, S}) where {T1,T2,S} =
+    b1.s == b2.s ? Bra(b1.c + b2.c, b1.s) : error("Bra +")
 +(k1::KetVec, k2::KetVec) = k1.s == k2.s ? KetVec(k1.c + k2.c, k1.s) : error("KetVec +")
 +(b1::BraVec, b2::BraVec) = (b1' + b2')'
 #  op + op
@@ -66,7 +68,8 @@ zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 -(op::Operator) = Operator(-op.c, op.ks, op.bs)
 -(op1::Operator, op2::Operator) = op1 + (-op2)
 #  x * dirac, dirac * x
-*(x::Number, d::D) where {D<:Dirac} = x == 0 ? x : D(x * d.c, d.s)
+*(x::Number, k::Ket) = x == 0 ? x : Ket(x * k.c, k.s)
+*(x::Number, b::Bra) = x == 0 ? x : Bra(x * b.c, b.s)
 *(d::D, x::Number) where {D<:Dirac} = *(x, d)
 #  bra * ket
 *(b::Bra{T1,S}, k::Ket{T2,S}) where {T1,T2,S} = b.s == k.s ? b.c * k.c : zero(b.c * k.c)
@@ -80,4 +83,7 @@ zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 *(op::Op, x::Number) = *(x, op)
 *(x::Number, op::Operator) = Operator(x * op.c, op.ks, op.bs)
 *(op::Operator, x::Number) = *(x, op)
+# op * op
+*(op1::Op{T1,S}, op2::Op{T2,S}) where {T1,T2,S} = Op(op1.c * op2.c * Bra(op1.bs) * Ket(op2.ks), op1.ks, op2.bs)
+*(op1::Operator{T1,S}, op2::Operator{T2,S}) where {T1,T2,S} = op1.ks == op2.ks && op1.bs == op2.bs ? Operator(op1.c * op2.c, op1.ks, op2.bs) : error("Operator *")
 ## Quantum Mechanics

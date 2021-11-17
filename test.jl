@@ -13,8 +13,8 @@ s1 == s2
 sv = [HyperfineStructureState{L,S,J,I}(2, i) for i = 2:-1:-2]
 ke = Ket(1//2, s1)
 
-basis = basis_get(hfs_uc, :B1, :MF, 1)
-basis2 = basis_get(hfs_uc, :B2, :MF, 1)
+basis = basis_get(hfs_uc, :B1, :MF, 3)
+basis2 = basis_get(hfs_uc, :B2, :MF, 3)
 
 Jz = 𝒥𝓏(basis)
 Iz = ℐ𝓏(basis)

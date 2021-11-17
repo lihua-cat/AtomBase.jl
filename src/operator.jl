@@ -51,6 +51,7 @@ function ops(basis::AbstractVector{<:AtomState}, ops::Tuple)
     d = length(basis)
     ks = [Ket(s) for s in basis]
     c = ks' .* ∘(ops...).(ks)
+    c = eltype(c) == Real ? float.(c) : c
     return Operator(Matrix(c'), basis, basis)
     # return Operator(float.(c'), basis, basis)
 end
