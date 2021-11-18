@@ -86,4 +86,7 @@ zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 # op * op
 *(op1::Op{T1,S}, op2::Op{T2,S}) where {T1,T2,S} = Op(op1.c * op2.c * Bra(op1.bs) * Ket(op2.ks), op1.ks, op2.bs)
 *(op1::Operator{T1,S}, op2::Operator{T2,S}) where {T1,T2,S} = op1.ks == op2.ks && op1.bs == op2.bs ? Operator(op1.c * op2.c, op1.ks, op2.bs) : error("Operator *")
+# op / x
+/(op::Operator, x::Number) = Operator(op.c / x, op.ks, op.bs)
+
 ## Quantum Mechanics

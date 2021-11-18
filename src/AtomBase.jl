@@ -5,8 +5,8 @@ using Printf
 using HalfIntegers, RationalRoots
 using WignerSymbols
 using LinearAlgebra
-import LinearAlgebra: adjoint, Adjoint
-import Base: +, -, *, zero
+import LinearAlgebra: adjoint, Adjoint, I as 𝐼
+import Base: +, -, *, /, zero
 
 
 include("utils.jl")
@@ -25,6 +25,7 @@ export 𝒥𝓏, 𝒥₊, 𝒥₋
 export ℐ𝓏, ℐ₊, ℐ₋
 export 𝒥₊ℐ₋, 𝒥₋ℐ₊
 export 𝒥₊²ℐ₋², 𝒥₋²ℐ₊²
+export hamiltonian_hfs
 include("operator.jl")
 
 export diagonal

@@ -1,5 +1,6 @@
 function diagonal(op::Operator{T, S}) where {T, S}
-    ishermitian(op) || error("Operator maxtrix is not hermitian")
+    # ishermitian(op) || error("Operator maxtrix is not hermitian")
+    (op.ks == op.bs && op.c ≈ op.c') || error("Operator maxtrix is not hermitian")
     m = op.c
     h = Hermitian(m)
     J = eltype(op.ks).parameters[3]
@@ -8,7 +9,8 @@ function diagonal(op::Operator{T, S}) where {T, S}
     values, vectors = eigen(h, sortby = sortby)
     ket_vectors = Vector{KetVec{float(T), S}}(undef, size(op, 2))
     for i in 1:size(op, 1)
-        ket_vectors[i] = KetVec(vectors[:, i], op.ks)
+        vec = vectors[1, i] >= 0 ? vectors[:, i] : -vectors[:, i]
+        ket_vectors[i] = KetVec(vec, op.ks)
     end
     return (;values, vectors = ket_vectors)
 end
