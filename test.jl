@@ -13,8 +13,8 @@ s1 == s2
 sv = [HyperfineStructureState{L,S,J,I}(2, i) for i = 2:-1:-2]
 ke = Ket(1//2, s1)
 
-basis = basis_get(hfs_uc, :B1, :MF, 2)
-basis2 = basis_get(hfs_uc, :B2, :MF, 2)
+basis = basis_get(hfs_uc, :B1, :MF, 1)
+basis2 = basis_get(hfs_uc, :B2, :MF, 1)
 
 Jz = 𝒥𝓏(basis)
 Iz = ℐ𝓏(basis)
@@ -37,8 +37,8 @@ for F1 in J[1]+I[1]:-1:abs(J[1]-I[1]), F2 in J[2]+I[2]:-1:abs(J[2]-I[2])
     println("$F1 -> $F2: $c")
 end
 
-h = hamiltonian_hfs(basis, 1, 0.1)
+h = hamiltonian_hfs(basis, 0.02759, 0.03812)
 h.c
 vals, vecs = diagonal(h)
 vals
-basistransform(vecs[1], basis2)
+vecs2 = [basistransform(v, basis2) for v in vecs]

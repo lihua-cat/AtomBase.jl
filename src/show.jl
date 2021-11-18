@@ -1,6 +1,6 @@
 function string_coe(c)
     if c isa AbstractFloat
-        c_str = c ≈ 0 ? rpad(" 0.", 6) : @sprintf "%6.3f" c
+        c_str = @sprintf "%9.3g" c
     elseif c isa Integer
         c_str = @sprintf "%-2d" c
     else
