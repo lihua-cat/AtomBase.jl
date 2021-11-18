@@ -1,7 +1,7 @@
 function string_coe(c)
     if c isa AbstractFloat
         if abs(c) < 1e-6
-            c_str = @sprintf "%9.3g" c
+            c_str = @sprintf "%9.3e" c
         else
             c_str = @sprintf "%9.6f" c
         end
