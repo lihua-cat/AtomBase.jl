@@ -3,7 +3,7 @@ function string_coe(c)
         if abs(c) < 1e-6
             c_str = @sprintf "%9.3g" c
         else
-            c_str = @sprintf "%9.6g" c
+            c_str = @sprintf "%9.6f" c
         end
     elseif c isa Integer
         c_str = @sprintf "%-2d" c
