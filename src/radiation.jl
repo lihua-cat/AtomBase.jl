@@ -58,12 +58,12 @@ function relative_transition_intensity(
     S = HalfInt.((S1, S2))
     J = HalfInt.((J1, J2))
     I = HalfInt.((I1, I2))
-    F = (b.F, k.F)
-    MF = (b.MF, k.MF)
+    F = (b.s.F, k.s.F)
+    MF = (b.s.MF, k.s.MF)
     if (-1)^L1 == (-1)^L2
-        c = transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
+        c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
     else
-        c = transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
+        c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
     end
     return c
 end
