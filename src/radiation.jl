@@ -54,10 +54,10 @@ function relative_transition_intensity(
         b::Bra{T1, HyperfineStructureState{L1,S1,J1,I1}}, 
         k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}}
         ) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
-    L = HalfInt.(L1, L2)
-    S = HalfInt.(S1, S2)
-    J = HalfInt.(J1, J2)
-    I = HalfInt.(I1, I2)
+    L = HalfInt.((L1, L2))
+    S = HalfInt.((S1, S2))
+    J = HalfInt.((J1, J2))
+    I = HalfInt.((I1, I2))
     F = (b.F, k.F)
     MF = (b.MF, k.MF)
     if (-1)^L1 == (-1)^L2
