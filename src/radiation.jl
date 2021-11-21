@@ -9,9 +9,9 @@ function transitionME(
         I::NTuple{2,T}, 
         F::NTuple{2,T}, 
         MF::NTuple{2,T},
-        q::T,
         k::Int = 1) where {T<:HalfInteger}
     #   <FMF|T^k_q|F'MF'> = c1 * <F||T^k||F'>
+    q = MF[1] - MF[2]
     c1 = wigner_eckart(F[1], F[2], MF[1], MF[2], q, k)
     #   <JIF||T^k||J'I'F'> = c2 * <J||T^k||J>
     c2 = uncoup_T1(J[1], I[1], F[1], J[2], I[2], F[2], 1)
@@ -52,8 +52,8 @@ end
 
 function relative_transition_intensity(
         b::Bra{T1, HyperfineStructureState{L1,S1,J1,I1}}, 
-        k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}}, 
-        q::Int) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
+        k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}}
+        ) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
     L = HalfInt.(L1, L2)
     S = HalfInt.(S1, S2)
     J = HalfInt.(J1, J2)
@@ -61,17 +61,17 @@ function relative_transition_intensity(
     F = (b.F, k.F)
     MF = (b.MF, k.MF)
     if (-1)^L1 == (-1)^L2
-        c = transitionME(J, I, F, MF, q, 1) * reducedME_M1(L, S, J)
+        c = transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
     else
-        c = transitionME(J, I, F, MF, q, 1) * reducedME_E1(L, S, J)
+        c = transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
     end
     return c
 end
 
-function relative_transition_intensity(bv::BraVec, kv::KetVec, q::Int)
+function relative_transition_intensity(bv::BraVec, kv::KetVec)
     c = 0
     for b in bv, k in kv
-        c += relative_transition_intensity(b, k, q)
+        c += relative_transition_intensity(b, k)
     end
     return c
 end
