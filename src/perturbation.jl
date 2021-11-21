@@ -12,5 +12,5 @@ function diagonal(op::Operator{T, S}) where {T, S}
         vec = vectors[1, i] >= 0 ? vectors[:, i] : -vectors[:, i]
         ket_vectors[i] = KetVec(vec, op.ks)
     end
-    return (;values, vectors = ket_vectors)
+    return (;splits = values, states = ket_vectors)
 end
