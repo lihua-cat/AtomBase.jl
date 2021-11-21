@@ -53,25 +53,25 @@ end
 function relative_transition_intensity(
         b::Bra{T1, HyperfineStructureState{L1,S1,J1,I1}}, 
         k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}}, 
-        q::Int; order::String) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
+        q::Int) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
     L = HalfInt.(L1, L2)
     S = HalfInt.(S1, S2)
     J = HalfInt.(J1, J2)
     I = HalfInt.(I1, I2)
     F = (b.F, k.F)
     MF = (b.MF, k.MF)
-    if order == "M1"
+    if (-1)^L1 == (-1)^L2
         c = transitionME(J, I, F, MF, q, 1) * reducedME_M1(L, S, J)
-    elseif order == "E1"
+    else
         c = transitionME(J, I, F, MF, q, 1) * reducedME_E1(L, S, J)
     end
     return c
 end
 
-function relative_transition_intensity(bv::BraVec, kv::KetVec, q::Int; order::String)
+function relative_transition_intensity(bv::BraVec, kv::KetVec, q::Int)
     c = 0
     for b in bv, k in kv
-        c += relative_transition_intensity(b, k, q, order = order)
+        c += relative_transition_intensity(b, k, q)
     end
     return c
 end
