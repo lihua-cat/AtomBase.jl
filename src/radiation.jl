@@ -12,7 +12,7 @@ function transitionME(
         k::Int = 1) where {T<:HalfInteger}
     #   <FMF|T^k_q|F'MF'> = c1 * <F||T^k||F'>
     q = MF[1] - MF[2]
-    c1 = wigner_eckart(F[1], F[2], MF[1], MF[2], q, k)
+    c1 = wigner_eckart(F[1], F[2], MF[1], MF[2], k, q)
     #   <JIF||T^k||J'I'F'> = c2 * <J||T^k||J>
     c2 = uncoup_T1(J[1], I[1], F[1], J[2], I[2], F[2], 1)
     return c1 * c2

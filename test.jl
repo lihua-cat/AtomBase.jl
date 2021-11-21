@@ -42,3 +42,7 @@ h.c
 vals, vecs = diagonal(h)
 vals
 vecs2 = [basistransform(v, basis2) for v in vecs]
+
+k = vecs2[1]
+b = k'
+relative_transition_intensity(b, k)
