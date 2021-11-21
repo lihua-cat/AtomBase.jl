@@ -60,12 +60,15 @@ function relative_transition_intensity(
     I = HalfInt.((I1, I2))
     F = (b.s.F, k.s.F)
     MF = (b.s.MF, k.s.MF)
-    if (-1)^L1 == (-1)^L2
+    q = MF[1] - MF[2]
+    if abs(q) > 1
+        c = 0
+    elseif (-1)^L1 == (-1)^L2
         c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
     else
         c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
     end
-    return c
+    return float(c)
 end
 
 function relative_transition_intensity(bv::BraVec, kv::KetVec)
