@@ -76,9 +76,8 @@ end
 function relative_transition_intensity(bv::BraVec, kv::KetVec)
     c = 0
     for b in bv, k in kv
-        if b.c * k.c ≈ 0
-            c += relative_transition_intensity(b, k)
-        end
+        b.c * k.c ≈ 0 && continue
+        c += relative_transition_intensity(b, k)
     end
     return c
 end
