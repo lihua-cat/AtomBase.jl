@@ -46,7 +46,7 @@ end
 function reducedME_E1(L, S, J)
     #   <LSJ||r||L'S'J'> = c * <L||r||L>
     #   <L||r||L'> depends on ψ(r), radical wave function.
-    c = uncoup_T1k(L[1], S[1], J[1], L[2], S[2], J[2], 1)
+    c = uncoup_T1(L[1], S[1], J[1], L[2], S[2], J[2], 1)
     return c
 end
 
