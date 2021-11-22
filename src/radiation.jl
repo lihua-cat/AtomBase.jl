@@ -61,12 +61,14 @@ function relative_transition_intensity(
     F = (b.s.F, k.s.F)
     MF = (b.s.MF, k.s.MF)
     q = MF[1] - MF[2]
-    if abs(q) > 1
-        c = 0
-    elseif (-1)^L1 == (-1)^L2
-        c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
+    if abs(q) <= 1
+        if (-1)^L1 == (-1)^L2
+            c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
+        else
+            c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
+        end
     else
-        c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
+        c = 0
     end
     return float(c)
 end
@@ -74,7 +76,9 @@ end
 function relative_transition_intensity(bv::BraVec, kv::KetVec)
     c = 0
     for b in bv, k in kv
-        c += relative_transition_intensity(b, k)
+        if b.c * k.c ≈ 0
+            c += relative_transition_intensity(b, k)
+        end
     end
     return c
 end
