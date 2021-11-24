@@ -13,17 +13,19 @@ see *The theory of atomic structure and spectra* (11.15).
 """
 wigner_eckart(j1, j2, m1, m2, k, q) = RationalRoot((-1)^(j1 - m1)) * wigner3j(j1, k, j2, -m1, q, m2)
 
+
 @doc raw"""
 
     reduceME(j, j')
 
-reduce matrix element `rme_J(j, j')` = $\langle\alpha jm|J^{(1)}_0|\alpha'j'm'\rangle$ 
+reduce matrix element `rme_J(j, j')` = $\left\langle\alpha j\left\|J^{(1)}\right\| \alpha^{\prime} j^{\prime}\right\rangle$
 ```math
-\left\langle\alpha j m\left|\mathbf{J}_{0}^{(1)}\right| \alpha^{\prime} j^{\prime} m^{\prime}\right\rangle=\left\langle\alpha j m\left|J_{z}\right| \alpha^{\prime} j^{\prime} m^{\prime}\right\rangle=m \delta_{\alpha j m, \alpha^{\prime} j' m^{\prime}}
+$\left\langle\alpha j\left\|J^{(1)}\right\| \alpha^{\prime} j^{\prime}\right\rangle=\delta_{\alpha j, \alpha^{\prime} j^{\prime}}[j(j+1)(2 j+1)]^{1 / 2}$
 ```
 see *The theory of atomic structure and spectra* (11.18).
 """
 reduceME(j1, j2) = j1 == j2 ? RationalRoot(√(j1 * (j1 + 1) * (2j1 + 1))) : zero(RationalRoot{Int})
+
 
 @doc raw"""
 
@@ -40,11 +42,12 @@ see *The theory of atomic structure and spectra* (11.38)
 """
 function uncoup_T1(j11, j21, j1, j12, j22, j2, k)
     if j21 == j22 
-        RationalRoot((-1)^(j11 + j21 + j2 + k) * √((2j1 + 1) * (2j2 + 1))) * 
-        wigner6j(j11, j21, j1, j2, k, j12)
+        c = RationalRoot((-1)^(j11 + j21 + j2 + k) * √((2j1 + 1) * (2j2 + 1))) * 
+            wigner6j(j11, j21, j1, j2, k, j12)
     else
-        zero(RationalRoot{Int})
+        c = 0
     end
+    return c
 end
 
 
@@ -63,9 +66,10 @@ see *The theory of atomic structure and spectra* (11.39)
 """
 function uncoup_T2(j11, j21, j1, j12, j22, j2, k)
     if j11 == j12
-        RationalRoot((-1)^(j11 + j22 + j1 + k) * √((2j1 + 1) * (2j2 + 1))) *
-        wigner6j(j11, j21, j1, k, j2, j22)
+        c = RationalRoot((-1)^(j11 + j22 + j1 + k) * √((2j1 + 1) * (2j2 + 1))) *
+            wigner6j(j11, j21, j1, k, j2, j22)
     else
-        zero(RationalRoot{Int})
+        c = 0
     end
+    return c
 end

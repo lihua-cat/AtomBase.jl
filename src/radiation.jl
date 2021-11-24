@@ -1,52 +1,44 @@
 @doc raw"""
 
-    transitionME(J, I, F, MF, q)
+    transitionME(J, I, F, MF, J', I', F', MF', k = 1)
 
-compute transition matrix element $\langle \alpha JIFM_F|\mathrm{(J+S)}_q|\alpha' J' I' F' M_F'\rangle$.
+return coefficient $c$ in $<JIFMF|P^k_q|J'I'F'MF'> = c \cdot <J||P^k||J'>$
 """
-function transitionME(
-        J::NTuple{2,T},
-        I::NTuple{2,T}, 
-        F::NTuple{2,T}, 
-        MF::NTuple{2,T},
-        k::Int = 1) where {T<:HalfInteger}
+function transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, k::Int = 1)
     #   <FMF|T^k_q|F'MF'> = c1 * <F||T^k||F'>
-    q = MF[1] - MF[2]
-    c1 = wigner_eckart(F[1], F[2], MF[1], MF[2], k, q)
+    q = MF2 - MF1
+    c1 = wigner_eckart(F1, F2, MF1, MF2, k, q)
     #   <JIF||T^k||J'I'F'> = c2 * <J||T^k||J>
-    c2 = uncoup_T1(J[1], I[1], F[1], J[2], I[2], F[2], 1)
+    c2 = uncoup_T1(J1, I1, F1, J2, I2, F2, 1)
     return c1 * c2
 end
 
 @doc raw"""
 
-    reducedME_M1(L, S, J)
+    reducedME_M1(L, S, J, L', S', J')
 
-MD transition matrix element $\langle \alpha LSJ|\mathrm{(J+S)}_q|\alpha' L'S'J'\rangle$.
+return value of $<J||J + (gs - 1)S||J'>$.
 """
-function reducedME_M1(L, S, J)
-    #   <LSJ||(J+S)||L'S'J'> = <LSJ||J||L'S'J'> + <LSJ||S||L'S'J'>
-    rme_J = reduceME(J[1], J[2])
+function reducedME_M1(L1, S1, J1, L2, S2, J2)
+    gs = 2.00232
+    #   <LSJ||(J+(gs-1)S)||L'S'J'> = <LSJ||J||L'S'J'> + (gs - 1)<LSJ||S||L'S'J'>
+    rme_J = reduceME(J1, J2)
     #   <LSJ||S||L'S'J'> = c * <S||S||S>
-    c = uncoup_T2(L[1], S[1], J[1], L[2], S[2], J[2], 1)
-    rme_S = reduceME(S[1], S[2])
-    if rme_J == 0
-        return c * rme_S
-    else
-        return rme_J + c * rme_S
-    end
+    c = uncoup_T2(L1, S1, J1, L2, S2, J2, 1)
+    rme_S = reduceME(S1, S2)
+    return rme_J + (gs - 1) * c * rme_S
 end
 
 @doc raw"""
 
-    reducedME_E1(L, S, J)
+    reducedME_E1(L, S, J, L', S', J')
 
-(realtive) ED transition matrix element $\langle \alpha LSJ|\mathrm{r}_q|\alpha' L'S'J'\rangle$.
+return coefficient $c$ in $<LSJ||r||L'S'J'> = c * <L||r||L>$. 
 """
-function reducedME_E1(L, S, J)
+function reducedME_E1(L1, S1, J1, L2, S2, J2)
     #   <LSJ||r||L'S'J'> = c * <L||r||L>
     #   <L||r||L'> depends on ψ(r), radical wave function.
-    c = uncoup_T1(L[1], S[1], J[1], L[2], S[2], J[2], 1)
+    c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
     return c
 end
 
@@ -54,23 +46,20 @@ function relative_transition_intensity(
         b::Bra{T1, HyperfineStructureState{L1,S1,J1,I1}}, 
         k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}}
         ) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
-    L = HalfInt.((L1, L2))
-    S = HalfInt.((S1, S2))
-    J = HalfInt.((J1, J2))
-    I = HalfInt.((I1, I2))
-    F = (b.s.F, k.s.F)
-    MF = (b.s.MF, k.s.MF)
-    q = MF[1] - MF[2]
+    F1, F2 = b.s.F, k.s.F
+    MF1, MF2 = b.s.MF, k.s.MF
+    q = MF1 - MF2
     if abs(q) <= 1
+        c1 = b.c * k.c * transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, 1)
         if (-1)^L1 == (-1)^L2
-            c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_M1(L, S, J)
+            c = c1 * reducedME_M1(L1, S1, J1, L2, S2, J2)
         else
-            c = b.c * k.c * transitionME(J, I, F, MF, 1) * reducedME_E1(L, S, J)
+            c = c1 * reducedME_E1(L1, S1, J1, L2, S2, J2)
         end
     else
         c = 0
     end
-    return float(c)
+    return c
 end
 
 function relative_transition_intensity(bv::BraVec, kv::KetVec)

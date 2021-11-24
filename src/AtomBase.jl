@@ -21,10 +21,10 @@ include("basis.jl")
 export Dirac, Ket, Bra, KetVec, BraVec, Op, Operator
 include("dirac.jl")
 
-export 𝒥𝓏, 𝒥₊, 𝒥₋
-export ℐ𝓏, ℐ₊, ℐ₋
-export 𝒥₊ℐ₋, 𝒥₋ℐ₊
-export 𝒥₊²ℐ₋², 𝒥₋²ℐ₊²
+export 𝐉𝐳, 𝐉₊, 𝐉₋
+export 𝐈𝐳, 𝐈₊, 𝐈₋
+export 𝐉₊𝐈₋, 𝐉₋𝐈₊
+export 𝐉₊²𝐈₋², 𝐉₋²𝐈₊²
 export hamiltonian_hfs
 include("operator.jl")
 
