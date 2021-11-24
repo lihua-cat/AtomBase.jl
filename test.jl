@@ -43,6 +43,9 @@ vals, vecs = diagonal(h)
 vals
 vecs2 = [basistransform(v, basis2) for v in vecs]
 
-k = vecs2[1]
-b = k'
+k = Ket(HyperfineStructureState{1,1/2,1/2,5/2}(3, 3))
+b = Bra(HyperfineStructureState{1,1/2,3/2,5/2}(4, 4))
+
+transitionME(3/2, 5/2, 4, 4, 1/2, 5/2, 3, 3, 1)
+
 relative_transition_intensity(b, k)

@@ -6,7 +6,7 @@ return coefficient $c$ in $<JIFMF|P^k_q|J'I'F'MF'> = c \cdot <J||P^k||J'>$
 """
 function transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, k::Int = 1)
     #   <FMF|T^k_q|F'MF'> = c1 * <F||T^k||F'>
-    q = MF2 - MF1
+    q = MF1 - MF2
     c1 = wigner_eckart(F1, F2, MF1, MF2, k, q)
     #   <JIF||T^k||J'I'F'> = c2 * <J||T^k||J>
     c2 = uncoup_T1(J1, I1, F1, J2, I2, F2, 1)
