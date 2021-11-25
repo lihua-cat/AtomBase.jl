@@ -25,8 +25,10 @@ include("dirac.jl")
 # export 𝐈𝐳, 𝐈₊, 𝐈₋
 # export 𝐉₊𝐈₋, 𝐉₋𝐈₊
 # export 𝐉₊²𝐈₋², 𝐉₋²𝐈₊²
-export hamiltonian_zeeman, hamiltonian_hfs, hamiltonian_total
 include("operator.jl")
+
+export hamiltonian_zeeman, hamiltonian_hfs, hamiltonian_total
+include("hamiltonian.jl")
 
 export diagonal
 include("perturbation.jl")
