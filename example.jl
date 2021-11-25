@@ -1,4 +1,5 @@
 using AtomBase
+using HalfIntegers
 
 L = 1
 S = 1//2
@@ -13,14 +14,15 @@ s1 == s2
 sv = [HyperfineStructureState{L,S,J,I}(2, i) for i = 2:-1:-2]
 ke = Ket(1//2, s1)
 
-basis = basis_get(hfs_uc, :B1, :MF, 1)
-basis2 = basis_get(hfs_uc, :B2, :MF, 1)
+MF = HalfInt(1)
+basis = hfs_uc[MF].basis1
+basis2 = hfs_uc[MF].basis2
 
-Jz = 𝐉𝐳(basis)
-Iz = 𝐈𝐳(basis)
-J₊I₋ = 𝐉₊𝐈₋(basis)
-J₋I₊ = 𝐉₋𝐈₊(basis)
-J₊²I₋² = 𝐉₊²𝐈₋²(basis)
+Jz = AtomBase.𝐉𝐳(basis)
+Iz = AtomBase.𝐈𝐳(basis)
+J₊I₋ = AtomBase.𝐉₊𝐈₋(basis)
+J₋I₊ = AtomBase.𝐉₋𝐈₊(basis)
+J₊²I₋² = AtomBase.𝐉₊²𝐈₋²(basis)
 
 vals, vecs = diagonal(Jz)
 vals, vecs = diagonal(J₊I₋ + J₋I₊)

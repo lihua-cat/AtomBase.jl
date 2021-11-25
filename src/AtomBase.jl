@@ -1,6 +1,6 @@
 module AtomBase
 
-using DataFrames
+using IndexedTables
 using Printf
 using HalfIntegers, RationalRoots
 using WignerSymbols
@@ -21,11 +21,11 @@ include("basis.jl")
 export Dirac, Ket, Bra, KetVec, BraVec, Op, Operator
 include("dirac.jl")
 
-export 𝐉𝐳, 𝐉₊, 𝐉₋
-export 𝐈𝐳, 𝐈₊, 𝐈₋
-export 𝐉₊𝐈₋, 𝐉₋𝐈₊
-export 𝐉₊²𝐈₋², 𝐉₋²𝐈₊²
-export hamiltonian_hfs
+# export 𝐉𝐳, 𝐉₊, 𝐉₋
+# export 𝐈𝐳, 𝐈₊, 𝐈₋
+# export 𝐉₊𝐈₋, 𝐉₋𝐈₊
+# export 𝐉₊²𝐈₋², 𝐉₋²𝐈₊²
+export hamiltonian_zeeman, hamiltonian_hfs, hamiltonian_total
 include("operator.jl")
 
 export diagonal

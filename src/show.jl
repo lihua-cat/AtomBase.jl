@@ -15,9 +15,10 @@ function string_coe(c)
 end
 
 ## AtomState
-function Base.show(io::IO, s::AtomState)
+function _show_state(io, s; option = 0)
     for p in propertynames(s)
         v = getproperty(s, p)
+        option == 1 && print(io, "$p=")
         if p in (:MJ, :MI, :MF, :MS)
             v > 0 && print(io, "+$v")
             v < 0 && print(io, "$v")
@@ -29,19 +30,17 @@ function Base.show(io::IO, s::AtomState)
     end
 end
 
+function Base.show(io::IO, s::AtomState)
+    print(io, "(")
+    _show_state(io, s)
+    print(io, ")")
+end
+
 function Base.show(io::IO, mime::MIME"text/plain", s::AtomState)
     println(io, summary(s))
-    for p in propertynames(s)
-        v = getproperty(s, p)
-        if p in (:MJ, :MI, :MF, :MS)
-            v > 0 && print(io, "$p=+$v")
-            v < 0 && print(io, "$p=$v")
-            v == 0 && print(io, "$p= $v")
-        else
-            print(io, "$p=$v")
-        end
-        p == propertynames(s)[end] || print(io, ",")
-    end
+    print(io, "(")
+    _show_state(io, s, option = 1)
+    print(io, ")")
     return nothing
 end
 
@@ -51,7 +50,7 @@ function Base.show(io::IO, d::Dirac)
     c_str = string_coe(c)
     printstyled(io, c_str, color = :blue)
     d isa Ket ? print(io, "|") : print(io, "<")
-    print(io, s)
+    _show_state(io, s)
     d isa Ket ? print(io, ">") : print(io, "|")
     return nothing
 end
@@ -61,10 +60,10 @@ function Base.show(io::IO, op::Op)
     c_str = string_coe(c)
     printstyled(io, c_str, color = :blue)
     print(io, "|")
-    print(io, ks)
+    _show_state(io, ks)
     print(io, ">")
     print(io, "<")
-    print(io, bs)
+    _show_state(io, bs)
     print(io, "|")
     return nothing
 end

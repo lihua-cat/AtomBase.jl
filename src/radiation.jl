@@ -38,7 +38,8 @@ return coefficient $c$ in $<LSJ||r||L'S'J'> = c * <L||r||L>$.
 function reducedME_E1(L1, S1, J1, L2, S2, J2)
     #   <LSJ||r||L'S'J'> = c * <L||r||L>
     #   <L||r||L'> depends on ψ(r), radical wave function.
-    c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
+    c = 1
+    # c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
     return c
 end
 
