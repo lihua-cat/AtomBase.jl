@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.1
+# v0.17.2
 
 using Markdown
 using InteractiveUtils
@@ -15,7 +15,7 @@ end
 # ╔═╡ c37f5f93-3707-483b-b580-e5b5a189669f
 using AtomBase
 
-# ╔═╡ 8cd311e3-d7aa-42a0-9e22-7214c0d0186b
+# ╔═╡ becf314a-93a3-4e2e-a2c5-46755364130e
 using DataFrames
 
 # ╔═╡ d4872ed6-b4e5-4b20-a285-dd333aa3c0cc
@@ -172,11 +172,14 @@ hfs_uc = let
 	basis_hfs(L, S, J, I, couple = false)
 end
 
+# ╔═╡ a1acd1ca-9918-444f-8343-4f7836280533
+MF = hfs_uc.index[6].MF
+
 # ╔═╡ 1334a6d2-1e64-4ec2-a001-77f5495cd65e
-basis_uc = basis_get(hfs_uc, :B1, :MF, 1)
+basis_uc = hfs_uc[MF].basis1
 
 # ╔═╡ 6e3ac2f9-3d1a-48c2-a536-7f0fed684e4a
-basis_c = basis_get(hfs_uc, :B2, :MF, 1)
+basis_c = hfs_uc[MF].basis2
 
 # ╔═╡ 887ae902-bd49-4270-a667-10a4409c28c0
 md"## Operator Matrix Representation"
@@ -185,22 +188,22 @@ md"## Operator Matrix Representation"
 Base.float(op::Operator) = Operator(float.(op.c), op.ks, op.bs)
 
 # ╔═╡ 59ad7b23-a03f-428d-af1a-1622ad44a0a5
-Jz = 𝒥𝓏(basis_uc)
+Jz = AtomBase.𝐉𝐳(basis_uc)
 
 # ╔═╡ e4bdef49-df82-4a08-b46c-95e4c8a4784f
-J₊I₋ = 𝒥₊ℐ₋(basis_uc)
+J₊I₋ = AtomBase.𝐉₊𝐈₋(basis_uc)
 
 # ╔═╡ 2a2146de-d99c-47ef-bfd0-adb4eb9977fe
-J₋I₊ = 𝒥₋ℐ₊(basis_uc)
+J₋I₊ = AtomBase.𝐉₋𝐈₊(basis_uc)
 
 # ╔═╡ 16444fe1-68a9-4b3f-b6e7-ef4a0eec514e
-J₊²I₋² = 𝒥₊²ℐ₋²(basis_uc)
+J₊²I₋² = AtomBase.𝐉₊²𝐈₋²(basis_uc)
 
 # ╔═╡ 211d76e5-5e44-4cff-8191-27259bc7bfa8
 md"## Diagnoalization"
 
 # ╔═╡ 459f3741-3560-44e3-9c75-69f83a6293d7
-vals, vecs = diagonal(0.01 * Jz)
+vals, vecs = diagonal(Jz)
 
 # ╔═╡ f8ab3973-d277-47f4-90f3-0bbe34bb2ae9
 kv = vecs[1]
@@ -232,7 +235,8 @@ let
 		p = []
 		for Fl in I-J[2]:I+J[2]
 			for Fu in I-J[1]:I+J[1]
-				push!(p, uncoup_T1(J[1], I, Fu, J[2], I, Fl, 1)^2)
+				c = uncoup_T1(J[1], I, Fu, J[2], I, Fl, 1)^2
+				push!(p, c)
 			end
 		end
 		df1[!, Symbol("I=$I")] = p / sum(p)
@@ -267,21 +271,21 @@ md"I127"
 let
 	L = (1, 1)
 	S = (1//2, 1//2)
-	J = (1//2, 3//2)
+	J = (3//2, 1//2)
 	I = 5//2
-	Fl = I-J[2]:I+J[2]
-	Fu = I-J[1]:I+J[1]
+	Fl = I-J[1]:I+J[1]
+	Fu = I-J[2]:I+J[2]
 	df = DataFrame()
 	F2v = []
 	F1v = []
 	p = []
-	for F2 in Fl, F1 in Fu
+	for F1 in Fl, F2 in Fu
 		push!(F1v, Int(F1))
 		push!(F2v, Int(F2))
 		push!(p, uncoup_T1(J[1], I, F1, J[2], I, F2, 1)^2)
 	end
-	df.Fu = F1v
-	df.Fl = F2v
+	df.Fu = F2v
+	df.Fl = F1v
 	df.Relative = p / sum(p)
 	df
 end
@@ -290,7 +294,7 @@ end
 # ╟─d4872ed6-b4e5-4b20-a285-dd333aa3c0cc
 # ╠═92ecd7f0-46ab-11ec-3748-9da2e4977a67
 # ╠═c37f5f93-3707-483b-b580-e5b5a189669f
-# ╠═8cd311e3-d7aa-42a0-9e22-7214c0d0186b
+# ╠═becf314a-93a3-4e2e-a2c5-46755364130e
 # ╟─1fa72bdc-7bf0-4c93-a3cf-83df40ebb544
 # ╟─a2f39c76-dbea-4662-a963-8fb844ce6c03
 # ╟─3fda0649-b1a2-46bd-8baf-bc9391d8bc9a
@@ -302,12 +306,13 @@ end
 # ╟─70cec9c6-c891-4ada-b354-a6ca5d6f7a73
 # ╟─b29c0833-d5e7-402a-a086-2c5d5d1f850e
 # ╟─a5228079-31bc-4307-a6ef-a95dea3384a8
-# ╠═5af92c73-cc1b-49b1-b782-b22e9e38e443
+# ╟─5af92c73-cc1b-49b1-b782-b22e9e38e443
 # ╟─8adc89f8-0b96-4cbe-932f-df1d43b115e6
 # ╟─91c8844c-3265-4106-acb6-7eb19d206c01
 # ╟─4a9efa12-c06a-40f9-850d-f32d81c42a90
 # ╟─b688d23e-245d-46f5-b6b3-dfda4ea093e4
 # ╟─1f99fbbe-22dd-4bd3-9e67-4697c9203233
+# ╠═a1acd1ca-9918-444f-8343-4f7836280533
 # ╠═1334a6d2-1e64-4ec2-a001-77f5495cd65e
 # ╠═6e3ac2f9-3d1a-48c2-a536-7f0fed684e4a
 # ╟─887ae902-bd49-4270-a667-10a4409c28c0
