@@ -12,6 +12,7 @@ function string_coe(c)
     else
         c_str = repr(c, context = :compact => true)
     end
+    return c_str
 end
 
 ## AtomState
@@ -28,12 +29,14 @@ function _show_state(io, s; option = 0)
         end
         p == propertynames(s)[end] || print(io, ",")
     end
+    return nothing
 end
 
 function Base.show(io::IO, s::AtomState)
     print(io, "(")
     _show_state(io, s)
     print(io, ")")
+    return nothing
 end
 
 function Base.show(io::IO, mime::MIME"text/plain", s::AtomState)

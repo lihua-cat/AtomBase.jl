@@ -1,6 +1,6 @@
 module AtomBase
 
-using IndexedTables
+using DataFrames
 using Printf
 using HalfIntegers, RationalRoots
 using WignerSymbols
@@ -8,14 +8,13 @@ using LinearAlgebra
 import LinearAlgebra: adjoint, Adjoint, I as 𝐼
 import Base: +, -, *, /, zero
 
-
-include("utils.jl")
+using UsefulFunctions
 
 export AtomState
 export HyperfineStructureState, UncoupledHyperfineStructureState
 include("state.jl")
 
-export basis_hfs, basis_get
+export basis_hfs
 include("basis.jl")
 
 export Dirac, Ket, Bra, KetVec, BraVec, Op, Operator

@@ -6,7 +6,7 @@ function basis_hfs(L::Int, S::HalfInt, J::HalfInt, I::HalfInt; couple::Bool)
         for i = 1:num
             B[i] = [HyperfineStructureState{L,S,J,I}(F[i], MF) for MF in collect(F[i]:-1:(-F[i]))]
         end
-        data = ndsparse((F = F,), (basis = B,))
+        data = DataFrame(F = F, basis = B)
     else
         MF = collect((J+I):-1:(-(J + I)))
         num = length(MF)
@@ -23,7 +23,7 @@ function basis_hfs(L::Int, S::HalfInt, J::HalfInt, I::HalfInt; couple::Bool)
             B1[i] = [UncoupledHyperfineStructureState{L,S,J,I}(MJ[j], MI[j]) for j = 1:length(MJ)]
             B2[i] = [HyperfineStructureState{L,S,J,I}(F, MF[i]) for F in collect((J+I):-1:max(abs(J - I), abs(MF[i])))]
         end
-        data = ndsparse((MF = MF,), (basis1 = B1, basis2 = B2))
+        data = DataFrame(MF = MF, basis1 = B1, basis2 = B2)
     end
     return data
 end

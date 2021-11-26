@@ -4,23 +4,19 @@
 op_z(k::Ket, M::Symbol) = Ket(getfield(k.s, M) * k.c, k.s)
 
 # J+, J-
-function op_ladder(k::Ket, M::Symbol, s::Int)
+function op_ladder(k::Ket{T, UncoupledHyperfineStructureState{L,S,J,I}}, M::Symbol, s::Int) where {T,L,S,J,I}
     m = getfield(k.s, M)
     if M == :MJ
-        j = typeof(k.s).parameters[3]
+        j = J
     elseif M == :MI
-        j = typeof(k.s).parameters[4]
+        j = I
     end
-    abs(m) > j && return error("|m| > j occurs")
-    if s == 1
-        j == m && return zero(RationalRoot{Int})
-        c = k.c * RationalRoot(√((j - m) * (j + m + 1)))
-    elseif s == -1
-        j == -m && return zero(RationalRoot{Int})
-        c = k.c * RationalRoot(√((j + m) * (j - m + 1)))
-    end
-    s = reinstantiate(k.s, M => m + s)
-    return Ket(c, s)
+    abs(m) > j && error("|m| > j occurs")
+    s in (+1, -1) || error("(s: $s) is not +1 or -1")
+    j == s * m && return RationalRoot(0)
+    c = k.c * RationalRoot(√((j - s * m) * (j + s * m + 1)))
+    state = reinstantiate(k.s, M => m + s)
+    return Ket(c, state)
 end
 
 𝐉𝐳(k::Ket) = op_z(k, :MJ)
@@ -42,7 +38,6 @@ for op in (:(𝐉𝐳), :(𝐉₊), :(𝐉₋), :(𝐈𝐳), :(𝐈₊), :(𝐈�
         ks = [Ket(s) for s in basis]
         c = ks' .* $(op).(ks)
         return Operator(Matrix(c'), basis, basis)
-        # return Operator(float.(c'), basis, basis)
     end
 end
 
@@ -53,7 +48,6 @@ function ops(basis::AbstractVector{<:AtomState}, ops::Tuple)
     c = ks' .* ∘(ops...).(ks)
     c = eltype(c) == Real ? float.(c) : c
     return Operator(Matrix(c'), basis, basis)
-    # return Operator(float.(c'), basis, basis)
 end
 
 𝐉₊𝐈₋(basis::AbstractVector{<:AtomState}) = ops(basis, (𝐉₊, 𝐈₋))

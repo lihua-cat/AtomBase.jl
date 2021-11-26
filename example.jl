@@ -11,12 +11,13 @@ hfs_uc = basis_hfs(L, S, J, I, couple = false)
 s1 = HyperfineStructureState{L,S,J,I}(2, 1)
 s2 = HyperfineStructureState{L,S,J,I}(2, 2)
 s1 == s2
+Ket(s1) + Ket(s2)
 sv = [HyperfineStructureState{L,S,J,I}(2, i) for i = 2:-1:-2]
 ke = Ket(1//2, s1)
 
-MF = HalfInt(1)
-basis = hfs_uc[MF].basis1
-basis2 = hfs_uc[MF].basis2
+MF = 1
+basis = hfs_uc[hfs_uc.MF .== 1, :basis1][]
+basis2 = hfs_uc[hfs_uc.MF .== 1, :basis2][]
 
 Jz = AtomBase.𝐉𝐳(basis)
 Iz = AtomBase.𝐈𝐳(basis)

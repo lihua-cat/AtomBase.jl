@@ -268,7 +268,7 @@ end
 md"I127"
 
 # ╔═╡ 0b5e2e9c-9058-447a-a983-e22c77ab71fc
-let
+begin
 	L = (1, 1)
 	S = (1//2, 1//2)
 	J = (3//2, 1//2)
@@ -289,6 +289,9 @@ let
 	df.Relative = p / sum(p)
 	df
 end
+
+# ╔═╡ 7d91c377-a5a3-43e6-babc-7fa7e871a11b
+df[df.Fu .== 3 .&& df.Fl .== 4, :].Relative[1]
 
 # ╔═╡ Cell order:
 # ╟─d4872ed6-b4e5-4b20-a285-dd333aa3c0cc
@@ -332,4 +335,5 @@ end
 # ╟─432efe94-02de-4cfa-82a9-b2526aedec95
 # ╟─8976e17c-f4f0-4e63-8e4f-8dc3820d812a
 # ╟─5def5d5c-c3af-4570-9b33-418149a72159
-# ╟─0b5e2e9c-9058-447a-a983-e22c77ab71fc
+# ╠═0b5e2e9c-9058-447a-a983-e22c77ab71fc
+# ╠═7d91c377-a5a3-43e6-babc-7fa7e871a11b

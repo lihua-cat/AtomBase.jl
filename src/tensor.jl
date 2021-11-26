@@ -24,7 +24,7 @@ $\left\langle\alpha j\left\|J^{(1)}\right\| \alpha^{\prime} j^{\prime}\right\ran
 ```
 see *The theory of atomic structure and spectra* (11.18).
 """
-reduceME(j1, j2) = j1 == j2 ? RationalRoot(√(j1 * (j1 + 1) * (2j1 + 1))) : zero(RationalRoot{Int})
+reduceME(j1, j2) = j1 == j2 ? RationalRoot(√(j1 * (j1 + 1) * (2j1 + 1))) : RationalRoot(0)
 
 
 @doc raw"""
@@ -45,7 +45,7 @@ function uncoup_T1(j11, j21, j1, j12, j22, j2, k)
         c = RationalRoot((-1)^(j11 + j21 + j2 + k) * √((2j1 + 1) * (2j2 + 1))) * 
             wigner6j(j11, j21, j1, j2, k, j12)
     else
-        c = 0
+        c = RationalRoot(0)
     end
     return c
 end
@@ -69,7 +69,7 @@ function uncoup_T2(j11, j21, j1, j12, j22, j2, k)
         c = RationalRoot((-1)^(j11 + j22 + j1 + k) * √((2j1 + 1) * (2j2 + 1))) *
             wigner6j(j11, j21, j1, k, j2, j22)
     else
-        c = 0
+        c = RationalRoot(0)
     end
     return c
 end

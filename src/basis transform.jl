@@ -7,8 +7,8 @@ function *(b::Bra{T1,UncoupledHyperfineStructureState{L,S,J,I}}, k::Ket{T2,Hyper
 end
 
 function *(b::Bra{T1,HyperfineStructureState{L,S,J,I}}, k::Ket{T2,UncoupledHyperfineStructureState{L,S,J,I}}) where {T1,T2,L,S,J,I}
-    c = *(k', b')
-    return c'
+    c = (k' * b')'
+    return c
 end
 
 function *(bv::BraVec, kv::KetVec)

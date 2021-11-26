@@ -28,7 +28,7 @@ function hamiltonian_hfs(basis::AbstractVector{UncoupledHyperfineStructureState{
     J₋²I₊² = 𝐉₋²𝐈₊²(basis)
     E = Operator(Matrix{Int}(𝐼(length(basis))), basis, basis)
     h_md = A * (Jz * Iz + (J₊I₋ + J₋I₊) / 2)
-    if J == 1 / 2
+    if J == 1 / 2 || I < 1
         h_hfs = h_md
     else
         c1 = B / J / (2J - 1) / 2I / (2I - 1)

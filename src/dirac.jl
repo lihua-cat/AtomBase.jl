@@ -46,11 +46,39 @@ adjoint(op::Op) = Op(op.c', op.bs, op.ks)
 zero(d::D) where {D<:Dirac} = D(zero(d.c), d.s)
 zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 #  ket + ket, bra + bra
-+(k1::Ket{T1, S}, k2::Ket{T2, S}) where {T1,T2,S} =
-    k1.s == k2.s ? Ket(k1.c + k2.c, k1.s) : error("Ket +")
-+(b1::Bra{T1, S}, b2::Bra{T2, S}) where {T1,T2,S} =
-    b1.s == b2.s ? Bra(b1.c + b2.c, b1.s) : error("Bra +")
-+(k1::KetVec, k2::KetVec) = k1.s == k2.s ? KetVec(k1.c + k2.c, k1.s) : error("KetVec +")
+function +(k1::Ket{T1,S}, k2::Ket{T2,S}) where {T1,T2,S}
+    if k1.s == k2.s 
+        k = Ket(k1.c + k2.c, k1.s)
+    else
+        k = KetVec([k1.c, k2.c], [k1.s, k2.s])
+    end
+    return k
+end
+function +(k1::Ket{T1,S}, k2::KetVec{T2,S}) where {T1,T2,S}
+    if k1.s in k2.s
+        c = k2.c
+        c[k2.s .== k1.s] .+= k1.c
+        k = KetVec(c, k2.s)
+    else
+        k = KetVec([k2.c..., k1.c], [k2.s..., k1.s])
+    end
+    return k
+end
++(k1::KetVec, k2::Ket) = +(k2, k1)
+function +(k1::KetVec{T1,S}, k2::KetVec{T2,S}) where {T1,T2,S}
+    if k1.s == k2.s
+        k = KetVec(k1.c + k2.c, k1.s)
+    else
+        k = k1
+        for ki in k2
+            k += ki
+        end
+    end
+    return k
+end
++(b1::Bra, b2::Bra) = (b1' + b2')'
++(b1::Bra, b2::BraVec) = (b1' + b2')'
++(b1::BraVec, b2::Bra) = +(b2, b1)
 +(b1::BraVec, b2::BraVec) = (b1' + b2')'
 #  op + op
 +(op1::Op{T1,S}, op2::Op{T2,S}) where {T1,T2,S} =
@@ -74,8 +102,7 @@ zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 #  bra * ket
 *(b::Bra{T1,S}, k::Ket{T2,S}) where {T1,T2,S} = b.s == k.s ? b.c * k.c : zero(b.c * k.c)
 #  ket * bra = op
-*(k::Ket{T1,S}, b::Bra{T2,S}) where {T1,T2,S} =
-    Op{promote_type(T1, T2),S}(k.c * b.c, k.s, b.s)
+*(k::Ket{T1,S}, b::Bra{T2,S}) where {T1,T2,S} = Op(k.c * b.c, k.s, b.s)
 #  op * ket
 *(op::Op{T1,S}, k::Ket{T2,S}) where {T1,T2,S} = Ket(Bra(op.c, op.bs) * k, op.ks)
 #  x * op, op * x
@@ -85,7 +112,8 @@ zero(op::Op) = Op(zero(op.c), op.ks, op.bs)
 *(op::Operator, x::Number) = *(x, op)
 # op * op
 *(op1::Op{T1,S}, op2::Op{T2,S}) where {T1,T2,S} = Op(op1.c * op2.c * Bra(op1.bs) * Ket(op2.ks), op1.ks, op2.bs)
-*(op1::Operator{T1,S}, op2::Operator{T2,S}) where {T1,T2,S} = op1.ks == op2.ks && op1.bs == op2.bs ? Operator(op1.c * op2.c, op1.ks, op2.bs) : error("Operator *")
+*(op1::Operator{T1,S}, op2::Operator{T2,S}) where {T1,T2,S} = 
+    op1.ks == op2.ks && op1.bs == op2.bs ? Operator(op1.c * op2.c, op1.ks, op2.bs) : error("Operator *")
 # op / x
 /(op::Operator, x::Number) = Operator(op.c / x, op.ks, op.bs)
 
