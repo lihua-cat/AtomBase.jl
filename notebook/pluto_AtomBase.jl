@@ -8,12 +8,16 @@ using InteractiveUtils
 begin
 	import Pkg
 	Pkg.activate(mktempdir())
+	Pkg.add(url = "https://github.com/lihua-cat/UsefulFunctions.jl")
 	Pkg.add(url = "https://github.com/lihua-cat/AtomBase.jl")
 	Pkg.add("DataFrames")
 end
 
 # ╔═╡ c37f5f93-3707-483b-b580-e5b5a189669f
 using AtomBase
+
+# ╔═╡ dd2ebed3-21b3-414e-b320-4696dfa75657
+using UsefulFunctions 
 
 # ╔═╡ becf314a-93a3-4e2e-a2c5-46755364130e
 using DataFrames
@@ -173,13 +177,13 @@ hfs_uc = let
 end
 
 # ╔═╡ a1acd1ca-9918-444f-8343-4f7836280533
-MF = hfs_uc.index[6].MF
+MF = 1
 
 # ╔═╡ 1334a6d2-1e64-4ec2-a001-77f5495cd65e
-basis_uc = hfs_uc[MF].basis1
+basis_uc = hfs_uc[hfs_uc.MF .== MF, :basis1][]
 
 # ╔═╡ 6e3ac2f9-3d1a-48c2-a536-7f0fed684e4a
-basis_c = hfs_uc[MF].basis2
+basis_c = hfs_uc[hfs_uc.MF .== MF, :basis2][]
 
 # ╔═╡ 887ae902-bd49-4270-a667-10a4409c28c0
 md"## Operator Matrix Representation"
@@ -203,9 +207,20 @@ J₊²I₋² = AtomBase.𝐉₊²𝐈₋²(basis_uc)
 md"## Diagnoalization"
 
 # ╔═╡ 459f3741-3560-44e3-9c75-69f83a6293d7
-vals, vecs = diagonal(Jz)
+let
+	vals, vecs = diagonal(Jz)
+end
 
-# ╔═╡ f8ab3973-d277-47f4-90f3-0bbe34bb2ae9
+# ╔═╡ fddba77b-cde9-4307-8167-fcd8833f7a5b
+h = hamiltonian_hfs(basis_uc, 0.02759, 0.03812)
+
+# ╔═╡ 919d240d-8e96-4235-a00e-c0d95d6a0d8c
+vals, vecs = diagonal(h)
+
+# ╔═╡ 55189e1d-0431-4317-ad4f-4ed71f679f4a
+vecs2 = [basistransform(v, basis_c) for v in vecs]
+
+# ╔═╡ ff6801e0-f10f-4dc0-8665-8cbef6cd28b5
 kv = vecs[1]
 
 # ╔═╡ 9f07f248-6fc1-433d-9358-30343feb4e54
@@ -216,6 +231,9 @@ kvt = basistransform(kv, basis_c)
 
 # ╔═╡ 7b93d187-8ffa-41e2-9a48-506c997f3601
 kvtt = basistransform(kvt, basis_uc)
+
+# ╔═╡ 34e24f64-8bed-4268-ba0d-1c1c9fc5b205
+kv.c ≈ kvtt.c
 
 # ╔═╡ 8aaf45b8-a941-42c9-a8eb-f50d0e471496
 md"## Radiation between HFS"
@@ -293,10 +311,19 @@ end
 # ╔═╡ 7d91c377-a5a3-43e6-babc-7fa7e871a11b
 df[df.Fu .== 3 .&& df.Fl .== 4, :].Relative[1]
 
+# ╔═╡ e5e05c16-c38a-4357-8376-bf9c1306d7b6
+begin
+	j = 3/2
+	i = 1
+	f = 5/2
+	f*(f+1) - j*(j+1) - i*(i+1)
+end
+
 # ╔═╡ Cell order:
 # ╟─d4872ed6-b4e5-4b20-a285-dd333aa3c0cc
 # ╠═92ecd7f0-46ab-11ec-3748-9da2e4977a67
 # ╠═c37f5f93-3707-483b-b580-e5b5a189669f
+# ╠═dd2ebed3-21b3-414e-b320-4696dfa75657
 # ╠═becf314a-93a3-4e2e-a2c5-46755364130e
 # ╟─1fa72bdc-7bf0-4c93-a3cf-83df40ebb544
 # ╟─a2f39c76-dbea-4662-a963-8fb844ce6c03
@@ -326,10 +353,14 @@ df[df.Fu .== 3 .&& df.Fl .== 4, :].Relative[1]
 # ╠═16444fe1-68a9-4b3f-b6e7-ef4a0eec514e
 # ╟─211d76e5-5e44-4cff-8191-27259bc7bfa8
 # ╠═459f3741-3560-44e3-9c75-69f83a6293d7
-# ╠═f8ab3973-d277-47f4-90f3-0bbe34bb2ae9
+# ╠═fddba77b-cde9-4307-8167-fcd8833f7a5b
+# ╠═919d240d-8e96-4235-a00e-c0d95d6a0d8c
+# ╠═55189e1d-0431-4317-ad4f-4ed71f679f4a
+# ╠═ff6801e0-f10f-4dc0-8665-8cbef6cd28b5
 # ╟─9f07f248-6fc1-433d-9358-30343feb4e54
 # ╠═20f1d19d-7775-40b1-8952-20ca1d2137b9
 # ╠═7b93d187-8ffa-41e2-9a48-506c997f3601
+# ╠═34e24f64-8bed-4268-ba0d-1c1c9fc5b205
 # ╟─8aaf45b8-a941-42c9-a8eb-f50d0e471496
 # ╟─fe8a2c7d-86ed-4631-bf0b-8d8b0eedef8d
 # ╟─432efe94-02de-4cfa-82a9-b2526aedec95
@@ -337,3 +368,4 @@ df[df.Fu .== 3 .&& df.Fl .== 4, :].Relative[1]
 # ╟─5def5d5c-c3af-4570-9b33-418149a72159
 # ╠═0b5e2e9c-9058-447a-a983-e22c77ab71fc
 # ╠═7d91c377-a5a3-43e6-babc-7fa7e871a11b
+# ╠═e5e05c16-c38a-4357-8376-bf9c1306d7b6
