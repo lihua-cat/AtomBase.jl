@@ -38,35 +38,27 @@ no dimension value(/a_0) of $<LSJ||r||L'S'J'>$.
 function reducedME_E1(L1, S1, J1, L2, S2, J2)
     #   <LSJ||r||L'S'J'> = c * <L||r||L>
     #   <L||r||L'> depends on ψ(r), radical wave function.
-    c1 = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
-    c2 = NaN    # need more information of ψ(r)
-    c = c1 * c2
-    return c
+    # c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
+    return NaN
 end
 
 function relative_transition_intensity(
         b::Bra{T1, HyperfineStructureState{L1,S1,J1,I1}}, 
         k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}},
-        order::String
+        order::Int
         ) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
     F1, F2 = b.s.F, k.s.F
     MF1, MF2 = b.s.MF, k.s.MF
     q = MF1 - MF2
-    kk = parse(Int64, order[end])
-    if abs(q) > kk
+    if abs(q) > order
         c = 0
     else
-        c1 = b.c * k.c * transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, kk)
-        if order == "E1"
-            c = c1 * reducedME_E1(L1, S1, J1, L2, S2, J2)
-        elseif order == "M1"
-            c = c1 * reducedME_M1(L1, S1, J1, L2, S2, J2)
-        end
+        c = b.c * k.c * transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, order)
     end
     return c
 end
 
-function relative_transition_intensity(bv::BraVec, kv::KetVec, order::String)
+function relative_transition_intensity(bv::BraVec, kv::KetVec, order::Int)
     c = 0
     for b in bv, k in kv
         b.c * k.c ≈ 0 && continue
