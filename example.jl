@@ -53,3 +53,6 @@ transitionME(3/2, 5/2, 4, 4, 1/2, 5/2, 3, 3, 1)
 
 relative_transition_intensity(b, k, 1)
 relative_transition_intensity(b, k, 2)
+
+reducedME_E1(L, S, J[1], L, S, J[2])
+reducedME_M1(L, S, J[1], L, S, J[2])

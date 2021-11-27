@@ -1,5 +1,7 @@
 module AtomBase
 
+import PhysicalConstants.CODATA2018: h as ℎ, μ_B as 𝜇B, μ_0 as 𝜇0, ε_0 as 𝜀₀, e as 𝑒, a_0 as 𝑎₀
+
 using DataFrames
 using Printf
 using HalfIntegers, RationalRoots

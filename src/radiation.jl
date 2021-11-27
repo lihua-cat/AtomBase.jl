@@ -17,7 +17,7 @@ end
 
     reducedME_M1(L, S, J, L', S', J')
 
-no dimension value(/ħ) of $<LSJ||J + (gs - 1)S||L'S'J'>$.
+value of $<LSJ||M1||L'S'J'>$.
 """
 function reducedME_M1(L1, S1, J1, L2, S2, J2)
     gs = 2.00232
@@ -26,20 +26,27 @@ function reducedME_M1(L1, S1, J1, L2, S2, J2)
     #   <LSJ||S||L'S'J'> = c * <S||S||S>
     c = uncoup_T2(L1, S1, J1, L2, S2, J2, 1)
     rme_S = reduceME(S1, S2)
-    return rme_J + (gs - 1) * c * rme_S
+    ME = rme_J + (gs - 1) * c * rme_S   # /
+    C = -√(𝜇0 / 4π) * 𝜇B    ## from cgs unit to SI unit
+    ME *= C
+    return ME
 end
 
 @doc raw"""
 
     reducedME_E1(L, S, J, L', S', J')
 
-no dimension value(/a_0) of $<LSJ||r||L'S'J'>$.
+value of $<LSJ||E1||L'S'J'>$.
 """
 function reducedME_E1(L1, S1, J1, L2, S2, J2)
     #   <LSJ||r||L'S'J'> = c * <L||r||L>
     #   <L||r||L'> depends on ψ(r), radical wave function.
-    # c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
-    return NaN
+    c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
+    rme = NaN # <L||r||L'> / a_0(Bohr radius)
+    ME = c * rme
+    C = -𝑒 * 𝑎₀ / √(4π * 𝜀₀)
+    ME *= C
+    return ME
 end
 
 function relative_transition_intensity(
