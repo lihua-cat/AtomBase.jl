@@ -17,7 +17,7 @@ end
 
     reducedME_M1(L, S, J, L', S', J')
 
-return value of $<J||J + (gs - 1)S||J'>$.
+no dimension value(/ħ) of $<LSJ||J + (gs - 1)S||L'S'J'>$.
 """
 function reducedME_M1(L1, S1, J1, L2, S2, J2)
     gs = 2.00232
@@ -33,41 +33,44 @@ end
 
     reducedME_E1(L, S, J, L', S', J')
 
-return coefficient $c$ in $<LSJ||r||L'S'J'> = c * <L||r||L>$. 
+no dimension value(/a_0) of $<LSJ||r||L'S'J'>$.
 """
 function reducedME_E1(L1, S1, J1, L2, S2, J2)
     #   <LSJ||r||L'S'J'> = c * <L||r||L>
     #   <L||r||L'> depends on ψ(r), radical wave function.
-    c = 1
-    # c = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
+    c1 = uncoup_T1(L1, S1, J1, L2, S2, J2, 1)
+    c2 = NaN    # need more information of ψ(r)
+    c = c1 * c2
     return c
 end
 
 function relative_transition_intensity(
         b::Bra{T1, HyperfineStructureState{L1,S1,J1,I1}}, 
-        k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}}
+        k::Ket{T2, HyperfineStructureState{L2,S2,J2,I2}},
+        order::String
         ) where {T1,T2,L1,S1,J1,I1,L2,S2,J2,I2}
     F1, F2 = b.s.F, k.s.F
     MF1, MF2 = b.s.MF, k.s.MF
     q = MF1 - MF2
-    if abs(q) <= 1
-        c1 = b.c * k.c * transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, 1)
-        if (-1)^L1 == (-1)^L2
-            c = c1 * reducedME_M1(L1, S1, J1, L2, S2, J2)
-        else
-            c = c1 * reducedME_E1(L1, S1, J1, L2, S2, J2)
-        end
-    else
+    kk = parse(Int64, order[end])
+    if abs(q) > kk
         c = 0
+    else
+        c1 = b.c * k.c * transitionME(J1, I1, F1, MF1, J2, I2, F2, MF2, kk)
+        if order == "E1"
+            c = c1 * reducedME_E1(L1, S1, J1, L2, S2, J2)
+        elseif order == "M1"
+            c = c1 * reducedME_M1(L1, S1, J1, L2, S2, J2)
+        end
     end
     return c
 end
 
-function relative_transition_intensity(bv::BraVec, kv::KetVec)
+function relative_transition_intensity(bv::BraVec, kv::KetVec, order::String)
     c = 0
     for b in bv, k in kv
         b.c * k.c ≈ 0 && continue
-        c += relative_transition_intensity(b, k)
+        c += relative_transition_intensity(b, k, order)
     end
     return c
 end

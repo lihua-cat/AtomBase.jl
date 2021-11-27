@@ -51,4 +51,5 @@ b = Bra(HyperfineStructureState{1,1/2,3/2,5/2}(4, 4))
 
 transitionME(3/2, 5/2, 4, 4, 1/2, 5/2, 3, 3, 1)
 
-relative_transition_intensity(b, k)
+relative_transition_intensity(b, k, "E1")
+relative_transition_intensity(b, k, "M1")

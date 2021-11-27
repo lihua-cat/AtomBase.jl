@@ -217,6 +217,26 @@ h = hamiltonian_hfs(basis_uc, 0.02759, 0.03812)
 # ╔═╡ 919d240d-8e96-4235-a00e-c0d95d6a0d8c
 vals, vecs = diagonal(h)
 
+# ╔═╡ 92a04c0d-d4b9-4a44-98d4-df6cb6209d8d
+md"energy level splitting departures from the Landé interval rule($4:3:2$), due to electric quadrupole term."
+
+# ╔═╡ 86b4db43-3054-48b0-ab76-e37b275eddf9
+let
+	δE = vals[end:-1:2] - vals[end-1:-1:1]
+	δE / δE[end] * 2
+end
+
+# ╔═╡ b725a750-2816-4d1b-ae51-c5714bd8f853
+md"if reduce hyperfine constant $B$ to 1/100 $A$, the Landé interval rule takes effect."
+
+# ╔═╡ e7a50533-4d36-43a9-af2d-b91d719483cf
+let
+	h = hamiltonian_hfs(basis_uc, 0.02759, 0.02759/100)
+	vals, vecs = diagonal(h)
+	δE = vals[end:-1:2] - vals[end-1:-1:1]
+	δE / δE[end] * 2
+end
+
 # ╔═╡ 55189e1d-0431-4317-ad4f-4ed71f679f4a
 vecs2 = [basistransform(v, basis_c) for v in vecs]
 
@@ -311,14 +331,6 @@ end
 # ╔═╡ 7d91c377-a5a3-43e6-babc-7fa7e871a11b
 df[df.Fu .== 3 .&& df.Fl .== 4, :].Relative[1]
 
-# ╔═╡ e5e05c16-c38a-4357-8376-bf9c1306d7b6
-begin
-	j = 3/2
-	i = 1
-	f = 5/2
-	f*(f+1) - j*(j+1) - i*(i+1)
-end
-
 # ╔═╡ Cell order:
 # ╟─d4872ed6-b4e5-4b20-a285-dd333aa3c0cc
 # ╠═92ecd7f0-46ab-11ec-3748-9da2e4977a67
@@ -355,6 +367,10 @@ end
 # ╠═459f3741-3560-44e3-9c75-69f83a6293d7
 # ╠═fddba77b-cde9-4307-8167-fcd8833f7a5b
 # ╠═919d240d-8e96-4235-a00e-c0d95d6a0d8c
+# ╟─92a04c0d-d4b9-4a44-98d4-df6cb6209d8d
+# ╟─86b4db43-3054-48b0-ab76-e37b275eddf9
+# ╟─b725a750-2816-4d1b-ae51-c5714bd8f853
+# ╟─e7a50533-4d36-43a9-af2d-b91d719483cf
 # ╠═55189e1d-0431-4317-ad4f-4ed71f679f4a
 # ╠═ff6801e0-f10f-4dc0-8665-8cbef6cd28b5
 # ╟─9f07f248-6fc1-433d-9358-30343feb4e54
@@ -366,6 +382,5 @@ end
 # ╟─432efe94-02de-4cfa-82a9-b2526aedec95
 # ╟─8976e17c-f4f0-4e63-8e4f-8dc3820d812a
 # ╟─5def5d5c-c3af-4570-9b33-418149a72159
-# ╠═0b5e2e9c-9058-447a-a983-e22c77ab71fc
+# ╟─0b5e2e9c-9058-447a-a983-e22c77ab71fc
 # ╠═7d91c377-a5a3-43e6-babc-7fa7e871a11b
-# ╠═e5e05c16-c38a-4357-8376-bf9c1306d7b6
