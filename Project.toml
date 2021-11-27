@@ -13,6 +13,7 @@ UsefulFunctions = "e5fb00c2-d19e-4bad-b01d-1af59f56b2b2"
 WignerSymbols = "9f57e263-0b3d-5e2e-b1be-24f2bb48858b"
 
 [compat]
+DataFrames = "1"
 HalfIntegers = "1"
 RationalRoots = "0.2"
 WignerSymbols = "2"
