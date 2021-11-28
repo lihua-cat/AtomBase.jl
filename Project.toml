@@ -16,6 +16,7 @@ WignerSymbols = "9f57e263-0b3d-5e2e-b1be-24f2bb48858b"
 [compat]
 DataFrames = "1"
 HalfIntegers = "1"
+PhysicalConstants = "0.2"
 RationalRoots = "0.2"
 WignerSymbols = "2"
 julia = "1"
