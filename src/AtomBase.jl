@@ -28,6 +28,7 @@ include("dirac.jl")
 # export 𝐉₊²𝐈₋², 𝐉₋²𝐈₊²
 include("operator.jl")
 
+export lande
 export hamiltonian_zeeman, hamiltonian_hfs, hamiltonian_total
 include("hamiltonian.jl")
 

@@ -1,9 +1,14 @@
+function lande(l, s, j; gl, gs)
+    j² = j * (j + 1) 
+    l² = l * (l + 1)
+    s² = s * (s + 1)
+    gj = gl * (j² + l² - s²) / 2j² + gs * (j² - l² + s²) / 2j²
+    return gj
+end
+
 function hamiltonian_zeeman(basis::AbstractVector{UncoupledHyperfineStructureState{L,S,J,I}},
     B; μB, μN, gl, gs, gI) where {L,S,J,I}
-    J² = J * (J + 1) 
-    L² = L * (L + 1)
-    S² = S * (S + 1)
-    gJ = gl * (J² + L² - S²) / 2J² + gs * (J² - L² + S²) / 2J²
+    gJ = lande(L, S, J, gl = gl, gs = gs)
     Jz = 𝐉𝐳(basis)
     Iz = 𝐈𝐳(basis)
     μ = -μB * gJ * Jz + μN * gI * Iz
