@@ -1,4 +1,4 @@
-function lande(l, s, j; gl, gs)
+function lande(l, s, j; gl = 1, gs = gS)
     j² = j * (j + 1) 
     l² = l * (l + 1)
     s² = s * (s + 1)

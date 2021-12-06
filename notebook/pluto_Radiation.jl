@@ -26,6 +26,9 @@ using AtomBase
 # ╔═╡ d64730eb-68c7-4f82-8a2a-d6d42ad4c419
 using Unitful
 
+# ╔═╡ fd8164c9-4082-4102-8ca7-368069a2d9ab
+using DataFrames
+
 # ╔═╡ b36dd160-d454-4e46-8894-c88e651c9e97
 html"""<style>
 main {
@@ -75,7 +78,10 @@ md"## 3. Einstein coefficients A and B"
 @doc σᵢⱼ
 
 # ╔═╡ 1143243c-a2a1-4bb9-8ccf-395290547086
-md"## Example: $^{127}\mathrm{I}$"
+md"## Example"
+
+# ╔═╡ a9ba2aaa-704c-45a8-be10-4c079f930c71
+md"### 1. transition cross section of $^{127}\mathrm{I}$"
 
 # ╔═╡ 4764c056-88d2-4223-aaf4-042fb8568c6f
 begin
@@ -105,6 +111,26 @@ a = aᵢⱼ(k, s)
 # ╔═╡ 346a7803-d43b-4826-b49b-b53f3cfcdfa3
 einsteinA(k, L, S, J[1], I, F[1], L, S, J[2], I, F[2], "M1")
 
+# ╔═╡ 5e523bb2-76fe-4742-8401-4b5e35e92a99
+md"### 2. transistion probability between two simple levels "
+
+# ╔═╡ 98188722-c5f5-4ac2-9ea4-bfa85d609d7e
+let
+	j1 = (1//2,)
+	j2 = (1//2,)
+	df = DataFrame(j1 = [], j2 = [], m1 = [], m2 = [], q = Int[], c = [])
+	for jj1 in j1, jj2 in j2
+		for m1 in jj1:-1:-jj1, m2 in jj2:-1:-jj2
+			q = m1 - m2
+			abs(q) > 1 && continue
+			@show jj1 jj2 m1 m2
+			c = wigner_eckart(jj1, jj2, m1, m2, 1, q)^2
+			push!(df, (jj1, jj2, m1, m2, q, c))
+		end
+	end
+	df
+end
+
 # ╔═╡ Cell order:
 # ╠═b36dd160-d454-4e46-8894-c88e651c9e97
 # ╠═ce85557a-79ae-4d28-8aaf-a3e1e57964c6
@@ -113,6 +139,7 @@ einsteinA(k, L, S, J[1], I, F[1], L, S, J[2], I, F[2], "M1")
 # ╠═3950837f-4ab1-4ec8-beed-8092635517f1
 # ╠═d2bbd0b8-3862-403c-be88-48d2fc8cef08
 # ╠═d64730eb-68c7-4f82-8a2a-d6d42ad4c419
+# ╠═fd8164c9-4082-4102-8ca7-368069a2d9ab
 # ╟─c8de153d-4572-47a7-944b-f70673aab66c
 # ╟─4204c151-1f8b-4cd2-8382-538835231655
 # ╟─f0e7eb88-8b9a-4355-8c2c-1066143e26d4
@@ -127,6 +154,7 @@ einsteinA(k, L, S, J[1], I, F[1], L, S, J[2], I, F[2], "M1")
 # ╟─d6d5ba4e-9789-4c3e-8335-69cb5e3c901b
 # ╟─f0a7642f-a8a5-44b3-aa88-76fb09737231
 # ╟─1143243c-a2a1-4bb9-8ccf-395290547086
+# ╟─a9ba2aaa-704c-45a8-be10-4c079f930c71
 # ╠═4764c056-88d2-4223-aaf4-042fb8568c6f
 # ╠═8154092d-239d-4cca-9f94-9229836205b2
 # ╠═cffd34a0-2505-4de1-988f-60bdabb19032
@@ -134,3 +162,5 @@ einsteinA(k, L, S, J[1], I, F[1], L, S, J[2], I, F[2], "M1")
 # ╠═da54a4ff-a580-40d3-b1f6-98eefebc2add
 # ╠═4e8a6397-a7d2-44a3-a58e-1a9b4836b754
 # ╠═346a7803-d43b-4826-b49b-b53f3cfcdfa3
+# ╟─5e523bb2-76fe-4742-8401-4b5e35e92a99
+# ╠═98188722-c5f5-4ac2-9ea4-bfa85d609d7e
